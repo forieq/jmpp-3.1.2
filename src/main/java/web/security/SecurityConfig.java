@@ -43,19 +43,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected  void configure(HttpSecurity http) throws Exception {
 
-        http.formLogin().successHandler(loginSuccessHandler).permitAll();
-
-        http.logout().permitAll()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login")
-                .and().csrf().disable();
-
-        http.authorizeRequests()
-                .antMatchers("/login").anonymous()
-                .antMatchers( "/users/**/edit", "/admin", "/admin/**")
-                .access("hasAnyRole('ADMIN')").anyRequest().authenticated();
+        http
+                    .authorizeRequests()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/").permitAll()
+                .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .successHandler(loginSuccessHandler)
+                    .loginProcessingUrl("/login")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .permitAll()
+                .and()
+                    .logout()
+                    .permitAll()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/login")
+                .and()
+                    .exceptionHandling()
+                    .accessDeniedPage("/login")
+                .and()
+                    .csrf().disable();
     }
-
-
-
 }

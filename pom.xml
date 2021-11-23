@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>jmpp-3_1_1</artifactId>
+    <artifactId>jmpp-3.1.2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>jmpp-3_1_1</name>
-    <description>jmpp-3_1_1</description>
+    <name>jmpp-3.1.2</name>
+    <description>jmpp-3.1.2</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -46,11 +46,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

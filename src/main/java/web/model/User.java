@@ -4,11 +4,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,23 +15,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @NotEmpty(message = "First name is required")
-    @NotBlank(message = "First name should not be blank")
     private String firstName;
 
-    @NotEmpty(message = "Last name is required")
-    @NotBlank(message = "Last name should not be blank")
     private String lastName;
 
-    @Min(value = 1, message = "Age should be greater than 0")
     private int age;
 
-    @NotEmpty(message = "Email is required")
-    @Email(message = "Invalid email")
     private String email;
 
-    @NotEmpty(message = "Password is required")
-    @NotBlank(message = "Password should not be blank")
     private String password;
 
     @ManyToMany
@@ -109,6 +97,24 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getRoleNames() {
+        String roleNames = "";
+        String[] namesOrder = {"ADMIN", "USER"};
+        Set<String> roleNamesSet = new HashSet<>();
+        for (Role role : roles) {
+            String roleName = role.getName();
+            roleName = roleName.substring(roleName.lastIndexOf("_") + 1);
+            roleNamesSet.add(roleName);
+        }
+        for (String orderedName : namesOrder) {
+            if (roleNamesSet.contains(orderedName)) {
+                roleNames += orderedName;
+                roleNames += " ";
+            }
+        }
+        return roleNames.substring(0, roleNames.length() - 1);
     }
 
     @Override
